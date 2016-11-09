@@ -5,7 +5,7 @@
 	<meta charset="utf-8" />
 </head>
 <body>
-    <h3>Points: </h3>
+    <h3 id="points">Points: </h3>
     <br />
     <h3 id="question">Question: </h3>
     <br />
@@ -36,6 +36,11 @@
                 {
                     $("#option" + i).text(choices[i]);
                 }
+            };
+
+            trivia.client.updatePoints = function (points) {
+                console.log('in updatePoints ' + points);
+                $("#points").text(points);
             };
             // Get the user name and store it to prepend to messages.
             $('#displayname').val(prompt('Enter your name:', ''));

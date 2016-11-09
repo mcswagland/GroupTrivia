@@ -10,6 +10,8 @@ namespace GroupTrivia
     {
         private static int points;
 
+        private static System.Timers.Timer pointTimer = new System.Timers.Timer(1000);
+
         private static List<Question> questionList = new List<Question>();
 
         private Question GetRandomQuestion()
@@ -57,6 +59,29 @@ namespace GroupTrivia
             BuildQuestionList();
             Question q = GetRandomQuestion();
             Clients.All.displayQuestion(q.question, q.choices);
+            PointsCountdown();
+        }
+
+        private void PointsCountdown()
+        {
+            points = 1000;
+            pointTimer.Elapsed += handleTimer;
+            pointTimer.Start();
+        }
+
+        private void handleTimer(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            if(points > 0)
+            {
+                points -= 50;
+
+                Clients.All.updatePoints(points);
+            }
+            else
+            {
+                pointTimer.Stop();
+                pointTimer.Elapsed -= handleTimer;
+            }
         }
 
         public void Hello()
